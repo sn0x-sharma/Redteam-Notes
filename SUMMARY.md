@@ -158,9 +158,12 @@
 
 ## BB WEB HUNT
 
-* [CRITICAL](bb-web-hunt/critical/README.md)
-  * [How I Found a 0-Day in Ghidra: Shared Project File Became a Code Execution Vector.](bb-web-hunt/critical/how-i-found-a-0-day-in-ghidra-shared-project-file-became-a-code-execution-vector..md)
-  * [How I Found an SSRF in Mozilla Firefox That  Compromise the Content Pipeline Behind 300M+ New Tab](bb-web-hunt/critical/how-i-found-an-ssrf-in-mozilla-firefox-that-compromise-the-content-pipeline-behind-300m+-new-tab.md)
+* [SSRF In Mozilla Firefox](bb-web-hunt/ssrf-in-mozilla-firefox/README.md)
+  * [How I Found an SSRF in Mozilla Firefox That  Compromise the Content Pipeline Behind 300M+ New Tab](bb-web-hunt/ssrf-in-mozilla-firefox/how-i-found-an-ssrf-in-mozilla-firefox-that-compromise-the-content-pipeline-behind-300m+-new-tab.md)
+* [RCE In PHP](bb-web-hunt/rce-in-php.md)
+* [My List of 0day's](bb-web-hunt/my-list-of-0days/README.md)
+  * [How I Found a 0-Day in Ghidra: Shared Project File Became a Code Execution Vector.](bb-web-hunt/my-list-of-0days/how-i-found-a-0-day-in-ghidra-shared-project-file-became-a-code-execution-vector..md)
+* [Other Research](bb-web-hunt/critical/README.md)
   * [SSRF - PII Exfil, Signup DoS, User Deletion & Email Lock](bb-web-hunt/critical/ssrf-pii-exfil-signup-dos-user-deletion-and-email-lock.md)
   * [CORS Wildcard + JWT Theft = Account Takeover on Every target.com Deployment](bb-web-hunt/critical/cors-wildcard-+-jwt-theft-account-takeover-on-every-target.com-deployment.md)
 
