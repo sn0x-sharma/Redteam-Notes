@@ -1,8 +1,32 @@
 ---
 icon: gitlab
-cover: ../.gitbook/assets/image (639).png
-coverY: 3.7080369843527805
-coverHeight: 548
+cover: ../.gitbook/assets/amw_pc (44).jpg
+coverY: 366.8933177022275
+coverHeight: 349
+layout:
+  width: default
+  cover:
+    visible: true
+    size: full
+    mask: none
+  title:
+    visible: true
+  description:
+    visible: true
+  tableOfContents:
+    visible: true
+  outline:
+    visible: true
+  pagination:
+    visible: true
+  metadata:
+    visible: true
+  tags:
+    visible: true
+  actions:
+    visible: true
+  anchors:
+    visible: true
 ---
 
 # Gitea2shell : Sandbox Escape to Host RCE
