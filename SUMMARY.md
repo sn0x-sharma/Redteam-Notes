@@ -161,6 +161,7 @@
 * [SSRF In Mozilla Firefox](bb-web-hunt/ssrf-in-mozilla-firefox/README.md)
   * [How I Found an SSRF in Mozilla Firefox That  Compromise the Content Pipeline Behind 300M+ New Tab](bb-web-hunt/ssrf-in-mozilla-firefox/how-i-found-an-ssrf-in-mozilla-firefox-that-compromise-the-content-pipeline-behind-300m+-new-tab.md)
 * [RCE In PHP](bb-web-hunt/rce-in-php.md)
+* [Gitea2shell : Sandbox Escape to Host RCE](bb-web-hunt/gitea2shell-sandbox-escape-to-host-rce.md)
 * [My List of 0day's](bb-web-hunt/my-list-of-0days/README.md)
   * [How I Found a 0-Day in Ghidra: Shared Project File Became a Code Execution Vector.](bb-web-hunt/my-list-of-0days/how-i-found-a-0-day-in-ghidra-shared-project-file-became-a-code-execution-vector..md)
 * [Other Research](bb-web-hunt/critical/README.md)
