@@ -31,7 +31,7 @@ layout:
 
 # Gitea2shell : Sandbox Escape to Host RCE
 
-## CVE-2026-73802: Sandbox Escape to Host RCE in Gitea act\_runner
+### CVE-2026-73802: Sandbox Escape to Host RCE
 
 ### Introduction
 
