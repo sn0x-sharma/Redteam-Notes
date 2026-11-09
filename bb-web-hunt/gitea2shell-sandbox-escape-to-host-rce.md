@@ -1,8 +1,8 @@
 ---
 icon: gitlab
 cover: ../.gitbook/assets/Gitea2shell Security Research Infographic.png
-coverY: 0
-coverHeight: 349
+coverY: 242.31642512077295
+coverHeight: 306
 layout:
   width: default
   cover:
