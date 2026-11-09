@@ -1,7 +1,7 @@
 ---
 icon: gitlab
-cover: ../.gitbook/assets/amw_pc (44).jpg
-coverY: 366.8933177022275
+cover: ../.gitbook/assets/Gitea2shell Security Research Infographic.png
+coverY: 0
 coverHeight: 349
 layout:
   width: default
