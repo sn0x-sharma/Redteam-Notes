@@ -9,6 +9,8 @@ coverHeight: 325
 
 <figure><img src="../.gitbook/assets/image (549).png" alt=""><figcaption></figcaption></figure>
 
+{% embed url="https://github.com/sn0x-sharma/RCE-IN-PHP-PHP2SHELL-VARIANT-POC" %}
+
 ## Why I looked at this chain
 
 When we talk about PHP security, most people think about SQL injection, unsafe deserialisation, file inclusion, or a bad upload handler. Those issues are usually visible at the application layer. This research claim is different: it describes a chain through PHP internals, where the application-level operation looks ordinary but native code may end up using an object property in a way that its type does not allow.
