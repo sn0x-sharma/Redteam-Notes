@@ -160,7 +160,7 @@
 
 * [SSRF In Mozilla Firefox](bb-web-hunt/ssrf-in-mozilla-firefox/README.md)
   * [How I Found an SSRF in Mozilla Firefox That  Compromise the Content Pipeline Behind 300M+ New Tab](bb-web-hunt/ssrf-in-mozilla-firefox/how-i-found-an-ssrf-in-mozilla-firefox-that-compromise-the-content-pipeline-behind-300m+-new-tab.md)
-* [Microsoft : Abusing Windows Defender to Leak Machine Credentials](bb-web-hunt/microsoft-abusing-windows-defender-to-leak-machine-credentials.md)
+* [Scan2Hash In Microsoft](bb-web-hunt/scan2hash-in-microsoft.md)
 * [Gitea2shell : Sandbox Escape to Host RCE](bb-web-hunt/gitea2shell-sandbox-escape-to-host-rce.md)
 * [RCE In PHP](bb-web-hunt/rce-in-php.md)
 * [My List of 0day's](bb-web-hunt/my-list-of-0days/README.md)

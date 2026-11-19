@@ -1,11 +1,12 @@
 ---
+description: Abusing Windows Defender to Leak Machine Credentials
 icon: windows
 cover: ../.gitbook/assets/Microsoft Defender Credential Leak Research (1).png
 coverY: 238.01351351351354
 coverHeight: 391
 ---
 
-# Microsoft : Abusing Windows Defender to Leak Machine Credentials
+# Scan2Hash In Microsoft
 
 ### The One-Line Summary
 
